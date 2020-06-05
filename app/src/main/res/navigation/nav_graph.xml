@@ -9,5 +9,29 @@
         android:id="@+id/topNewsFragment"
         android:name="com.tut.mynewsredoplayground.view.TopNewsFragment"
         android:label="TopNewsFragment"
-        tools:layout="@layout/top_news"/>
+        tools:layout="@layout/top_news">
+        <action
+            android:id="@+id/action_topNewsFragment_to_articleViewFragment"
+            app:destination="@id/articleViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleViewFragment"
+        android:name="com.tut.mynewsredoplayground.view.ArticleViewFragment"
+        android:label="ArticleViewFragment" />
+    <fragment
+        android:id="@+id/savedNewsFragment"
+        android:name="com.tut.mynewsredoplayground.view.SavedNewsFragment"
+        android:label="SavedNewsFragment" >
+        <action
+            android:id="@+id/action_savedNewsFragment_to_articleViewFragment"
+            app:destination="@id/articleViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchNewsFragment"
+        android:name="com.tut.mynewsredoplayground.view.SearchNewsFragment"
+        android:label="SearchNewsFragment" >
+        <action
+            android:id="@+id/action_searchNewsFragment_to_articleViewFragment"
+            app:destination="@id/articleViewFragment" />
+    </fragment>
 </navigation>

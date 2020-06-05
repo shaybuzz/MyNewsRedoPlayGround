@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.tut.mynewsredoplayground.R
 import com.tut.mynewsredoplayground.database.NewsDatabase
 import com.tut.mynewsredoplayground.network.NetworkService
@@ -21,6 +23,8 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
 
+        initUi()
+
         val api = NetworkService.api
         val dao = NewsDatabase.getInstance(this).getNewsDao()
         val repo = ArticleRepositoryImpl(api, dao)
@@ -32,6 +36,10 @@ class NewsActivity : AppCompatActivity() {
 
         //testApi()
         //testRepo()
+    }
+
+    private fun initUi() {
+        NavigationUI.setupWithNavController(bottomNavigationView, findNavController(R.id.fragment))
     }
 
     private fun testRepo() {
