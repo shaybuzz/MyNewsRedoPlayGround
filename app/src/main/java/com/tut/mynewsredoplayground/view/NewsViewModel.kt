@@ -11,8 +11,11 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
     val savedArticles = articleRepository.savedArticles
 
     val fetchStatus = articleRepository.fetchResponse
+    val searchFetchStatus = articleRepository.searchFetchResponse
 
-    private var page: Int = 1
+    private var fetchPage: Int = 1
+    private var searchPage: Int = 1
+
 
     init {
         fetchArticles("us")
@@ -20,12 +23,19 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
 
     fun fetchArticles(country: String) {
         viewModelScope.launch {
-            articleRepository.fetch(country, page++)
+            articleRepository.fetch(country, fetchPage++)
         }
     }
 
+    fun searchArticles(subject: String) {
+        viewModelScope.launch {
+            articleRepository.search(subject, searchPage++)
+        }
+    }
+
+
     fun deleteAll() {
-        page = 1
+        fetchPage = 1
         viewModelScope.launch {
             articleRepository.deleteAll()
         }

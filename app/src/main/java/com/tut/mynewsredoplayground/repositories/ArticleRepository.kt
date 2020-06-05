@@ -9,7 +9,11 @@ interface ArticleRepository {
     val savedArticles: LiveData<List<Article>>
 
     val fetchResponse: LiveData<Resource<List<Article>>>
+
     suspend fun fetch(country: String, page: Int = 1)
+
+    val searchFetchResponse: LiveData<Resource<List<Article>>>
+    suspend fun search(subject: String, page: Int = 1)
 
     suspend fun deleteAll()
 

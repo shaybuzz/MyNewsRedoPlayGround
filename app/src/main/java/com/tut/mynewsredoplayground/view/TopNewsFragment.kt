@@ -17,6 +17,7 @@ class TopNewsFragment : Fragment() {
 
     private val TAG = TopNewsFragment::class.java.simpleName
     private lateinit var binding: TopNewsBinding
+    private lateinit var adapter:ArticlesListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,12 +26,8 @@ class TopNewsFragment : Fragment() {
     ): View? {
         binding = TopNewsBinding.inflate(inflater, container, false)
         val viewModel by activityViewModels<NewsViewModel>()
-        val adapter = ArticlesListAdapter()
-        adapter.clickLitener = {
-            Timber.d("#### on click article ${it.title}")
-        }
 
-        binding.topNews.adapter = adapter
+        initRecyclerView()
 
         viewModel.fetchStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -49,13 +46,22 @@ class TopNewsFragment : Fragment() {
             }
         })
 
-        viewModel.savedArticles.observe(viewLifecycleOwner, Observer {
-            adapter.submitItems(it)
-        })
+//        viewModel.savedArticles.observe(viewLifecycleOwner, Observer {
+//            adapter.submitItems(it)
+//        })
 
 
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+        adapter = ArticlesListAdapter()
+        adapter.clickLitener = {
+            Timber.d("#### on click article ${it.title}")
+        }
+
+        binding.topNews.adapter = adapter
     }
 
 
