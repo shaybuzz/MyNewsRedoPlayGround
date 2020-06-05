@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Article(
     val author: String?,
     val content: String?,
-    val description: String,
+    val description: String?="",
     val publishedAt: String,
     @Embedded(prefix = "_source")
     val source: Source,

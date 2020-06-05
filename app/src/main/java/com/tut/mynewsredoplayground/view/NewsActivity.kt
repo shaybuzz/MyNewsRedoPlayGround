@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.tut.mynewsredoplayground.R
 import com.tut.mynewsredoplayground.database.NewsDatabase
@@ -33,11 +31,17 @@ class NewsActivity : AppCompatActivity() {
         newsViewModel =
             ViewModelProvider(this, NewsViewModelFactory(repo)).get(NewsViewModel::class.java)
 
-//        newsViewModel.deleteAll()
-//        newsViewModel.fetchArticles()
 
-        //testApi()
-        //testRepo()
+        //test()
+
+    }
+
+    private fun test() {
+        newsViewModel.deleteAll()
+        newsViewModel.fetchArticles("fr")
+
+        testApi()
+        testRepo()
     }
 
     private fun initUi() {
@@ -48,11 +52,11 @@ class NewsActivity : AppCompatActivity() {
         val api = NetworkService.api
         val dao = NewsDatabase.getInstance(this).getNewsDao()
         val repo = ArticleRepositoryImpl(api, dao)
-        repo.articles.observe(this, Observer {
+        repo.savedArticles.observe(this, Observer {
             Timber.d("### got \n\n\n $it \n\n\n got size ${it.size}")
         })
         GlobalScope.launch(Dispatchers.IO) {
-            repo.fetch()
+            repo.fetch("il", 1)
         }
     }
 

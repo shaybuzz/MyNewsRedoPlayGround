@@ -4,35 +4,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tut.mynewsredoplayground.repositories.ArticleRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 
 class NewsViewModel(private val articleRepository: ArticleRepository) : ViewModel() {
 
-    val articles = articleRepository.articles
+    val savedArticles = articleRepository.savedArticles
+
+    val fetchStatus = articleRepository.fetchResponse
 
     private var page: Int = 1
 
     init {
-        fetchArticles()
+        fetchArticles("us")
     }
 
-    fun fetchArticles() {
+    fun fetchArticles(country: String) {
         viewModelScope.launch {
-            articleRepository.fetch(page = page++)
+            articleRepository.fetch(country, page++)
         }
     }
 
-    fun deleteAll(){
+    fun deleteAll() {
         page = 1
         viewModelScope.launch {
             articleRepository.deleteAll()
         }
     }
-
 }
 
 @Suppress("UNCHECKED_CAST")

@@ -22,10 +22,10 @@ class ArticlesListAdapter : RecyclerView.Adapter<ArticlesListAdapter.ArticleView
         }
     }
 
-    private val items = AsyncListDiffer<Article>(this, diffCallBack)
+    private val differItems = AsyncListDiffer<Article>(this, diffCallBack)
 
     fun submitItems(data: List<Article>) {
-        items.submitList(data)
+        differItems.submitList(data)
     }
 
     inner class ArticleViewHolder(val binding: ItemArticlePreviewBinding) :
@@ -38,11 +38,11 @@ class ArticlesListAdapter : RecyclerView.Adapter<ArticlesListAdapter.ArticleView
     }
 
     override fun getItemCount(): Int {
-        return items.currentList.size
+        return differItems.currentList.size
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        val article = items.currentList.get(position)
+        val article = differItems.currentList.get(position)
         holder.binding.article = article
         clickLitener?.let { clickListener ->
             holder.binding.root.setOnClickListener {

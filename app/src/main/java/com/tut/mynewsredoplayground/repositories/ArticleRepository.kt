@@ -2,12 +2,14 @@ package com.tut.mynewsredoplayground.repositories
 
 import androidx.lifecycle.LiveData
 import com.tut.mynewsredoplayground.model.Article
+import com.tut.mynewsredoplayground.utils.Resource
 
 interface ArticleRepository {
 
-    val articles:LiveData<List<Article>>
+    val savedArticles: LiveData<List<Article>>
 
-    suspend fun fetch(page:Int=1)
+    val fetchResponse: LiveData<Resource<List<Article>>>
+    suspend fun fetch(country: String, page: Int = 1)
 
     suspend fun deleteAll()
 
