@@ -1,8 +1,7 @@
 package com.tut.mynewsredoplayground.view
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import android.os.CountDownTimer
+import androidx.lifecycle.*
 import com.tut.mynewsredoplayground.repositories.ArticleRepository
 import kotlinx.coroutines.launch
 
@@ -13,12 +12,32 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
     val fetchStatus = articleRepository.fetchResponse
     val searchFetchStatus = articleRepository.searchFetchResponse
 
+    var searchTerm = MutableLiveData<String>()
+
+
     private var fetchPage: Int = 1
     private var searchPage: Int = 1
+
+    private var countDownTimer: CountDownTimer = object : CountDownTimer(3000, 3000) {
+        override fun onFinish() {
+            searchTerm.value?.let {
+                searchArticles(it)
+            }
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+        }
+    }
 
 
     init {
         fetchArticles("us")
+        searchTerm.observeForever(Observer {
+            countDownTimer.cancel()
+            if (it.isNotEmpty()) {
+                countDownTimer.start()
+            }
+        })
     }
 
     fun fetchArticles(country: String) {

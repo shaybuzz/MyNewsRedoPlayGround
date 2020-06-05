@@ -28,6 +28,7 @@ class SearchNewsFragment : Fragment() {
 
         //get parent view model
         viewModel = ViewModelProvider(requireActivity()).get(NewsViewModel::class.java)
+        binding.viewmodel = viewModel
 
         initRecyclerView()
 

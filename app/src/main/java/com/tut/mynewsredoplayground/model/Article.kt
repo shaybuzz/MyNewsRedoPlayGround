@@ -3,6 +3,7 @@ package com.tut.mynewsredoplayground.model
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "articles")
 data class Article(
@@ -15,7 +16,7 @@ data class Article(
     val title: String,
     val url: String,
     val urlToImage: String?
-){
+):Serializable{
     @PrimaryKey(autoGenerate = true)
     var id:Long? = null
 }
