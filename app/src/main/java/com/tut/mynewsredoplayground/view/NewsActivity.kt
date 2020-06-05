@@ -27,11 +27,6 @@ class NewsActivity : AppCompatActivity() {
         newsViewModel =
             ViewModelProvider(this, NewsViewModelFactory(repo)).get(NewsViewModel::class.java)
 
-        newsViewModel.articles.observe(this, Observer {
-            Timber.d("### got \n\n\n $it \n\n\n ### got size ${it.size}")
-        })
-
-
 //        newsViewModel.deleteAll()
 //        newsViewModel.fetchArticles()
 
