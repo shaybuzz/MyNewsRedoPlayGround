@@ -8,6 +8,7 @@ import com.tut.mynewsredoplayground.R
 import com.tut.mynewsredoplayground.database.NewsDatabase
 import com.tut.mynewsredoplayground.network.NetworkService
 import com.tut.mynewsredoplayground.repositories.ArticleRepositoryImpl
+import kotlinx.android.synthetic.main.activity_news.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,13 +24,16 @@ class NewsActivity : AppCompatActivity() {
         val api = NetworkService.api
         val dao = NewsDatabase.getInstance(this).getNewsDao()
         val repo = ArticleRepositoryImpl(api, dao)
-        newsViewModel = ViewModelProvider(this, NewsViewModelFactory(repo)).get(NewsViewModel::class.java)
+        newsViewModel =
+            ViewModelProvider(this, NewsViewModelFactory(repo)).get(NewsViewModel::class.java)
 
         newsViewModel.articles.observe(this, Observer {
             Timber.d("### got \n\n\n $it \n\n\n ### got size ${it.size}")
         })
 
-        newsViewModel.fetchArticles()
+
+//        newsViewModel.deleteAll()
+//        newsViewModel.fetchArticles()
 
         //testApi()
         //testRepo()

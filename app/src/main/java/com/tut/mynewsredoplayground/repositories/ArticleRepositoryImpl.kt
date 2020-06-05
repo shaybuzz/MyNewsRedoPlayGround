@@ -13,4 +13,8 @@ class ArticleRepositoryImpl(private val newsApi: NewsApi, private val newsDao: N
         val respond =newsApi.getArticles(page = page)
         newsDao.upsert(respond.articles)
     }
+
+    override suspend fun deleteAll() {
+        newsDao.deleteAll()
+    }
 }

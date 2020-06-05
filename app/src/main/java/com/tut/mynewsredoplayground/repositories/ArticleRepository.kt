@@ -9,4 +9,6 @@ interface ArticleRepository {
 
     suspend fun fetch(page:Int=1)
 
+    suspend fun deleteAll()
+
 }

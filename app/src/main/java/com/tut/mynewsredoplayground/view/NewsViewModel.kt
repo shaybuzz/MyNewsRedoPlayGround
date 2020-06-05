@@ -2,6 +2,7 @@ package com.tut.mynewsredoplayground.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.tut.mynewsredoplayground.repositories.ArticleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,19 +14,19 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
 
     val articles = articleRepository.articles
 
-    private val job = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
     private var page: Int = 1
 
     fun fetchArticles() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             articleRepository.fetch(page = page++)
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
+    fun deleteAll(){
+        page = 1
+        viewModelScope.launch {
+            articleRepository.deleteAll()
+        }
     }
 
 }
