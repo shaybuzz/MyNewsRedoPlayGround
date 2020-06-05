@@ -10,7 +10,7 @@ class ArticleRepositoryImpl(private val newsApi: NewsApi, private val newsDao: N
     override val articles: LiveData<List<Article>> = newsDao.getArticles()
 
     override suspend fun fetch(page: Int) {
-        val respond =newsApi.getArticles(page = page)
+        val respond =newsApi.getArticles(page = page, country = "us")
         newsDao.upsert(respond.articles)
     }
 

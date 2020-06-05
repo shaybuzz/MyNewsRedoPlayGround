@@ -12,7 +12,11 @@
         tools:layout="@layout/top_news">
         <action
             android:id="@+id/action_topNewsFragment_to_articleViewFragment"
-            app:destination="@id/articleViewFragment" />
+            app:destination="@id/articleViewFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/articleViewFragment"
@@ -21,17 +25,25 @@
     <fragment
         android:id="@+id/savedNewsFragment"
         android:name="com.tut.mynewsredoplayground.view.SavedNewsFragment"
-        android:label="SavedNewsFragment" >
+        android:label="SavedNewsFragment">
         <action
             android:id="@+id/action_savedNewsFragment_to_articleViewFragment"
-            app:destination="@id/articleViewFragment" />
+            app:destination="@id/articleViewFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="com.tut.mynewsredoplayground.view.SearchNewsFragment"
-        android:label="SearchNewsFragment" >
+        android:label="SearchNewsFragment">
         <action
             android:id="@+id/action_searchNewsFragment_to_articleViewFragment"
-            app:destination="@id/articleViewFragment" />
+            app:destination="@id/articleViewFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.tut.mynewsredoplayground.R
 import com.tut.mynewsredoplayground.database.NewsDatabase
 import com.tut.mynewsredoplayground.network.NetworkService
@@ -39,7 +41,7 @@ class NewsActivity : AppCompatActivity() {
     }
 
     private fun initUi() {
-        NavigationUI.setupWithNavController(bottomNavigationView, findNavController(R.id.fragment))
+        bottomNavigationView.setupWithNavController(navController.findNavController())
     }
 
     private fun testRepo() {

@@ -12,6 +12,7 @@ import com.tut.mynewsredoplayground.view.adapters.ArticlesListAdapter
 import timber.log.Timber
 
 class TopNewsFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

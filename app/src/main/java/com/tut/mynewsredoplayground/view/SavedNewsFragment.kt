@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.tut.mynewsredoplayground.databinding.FragmentSavedNewsBinding
 
 class SavedNewsFragment : Fragment() {
@@ -14,6 +15,8 @@ class SavedNewsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentSavedNewsBinding.inflate(inflater, container, false)
+        val viewModel by activityViewModels<NewsViewModel>()
+
         return binding.root
     }
 }

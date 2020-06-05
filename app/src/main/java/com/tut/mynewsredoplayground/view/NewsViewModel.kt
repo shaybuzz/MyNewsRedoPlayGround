@@ -16,6 +16,10 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
 
     private var page: Int = 1
 
+    init {
+        fetchArticles()
+    }
+
     fun fetchArticles() {
         viewModelScope.launch {
             articleRepository.fetch(page = page++)
