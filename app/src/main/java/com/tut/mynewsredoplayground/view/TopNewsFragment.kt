@@ -20,6 +20,10 @@ class TopNewsFragment : Fragment() {
         val binding = TopNewsBinding.inflate(inflater, container, false)
         val viewModel by activityViewModels<NewsViewModel>()
         val adapter = ArticlesListAdapter()
+        adapter.clickLitener = {
+            Timber.d("#### on click article ${it.title}")
+        }
+
         binding.topNews.adapter = adapter
 
         viewModel.articles.observe(viewLifecycleOwner, Observer {

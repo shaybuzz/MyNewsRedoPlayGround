@@ -10,7 +10,9 @@ import com.tut.mynewsredoplayground.model.Article
 
 class ArticlesListAdapter : RecyclerView.Adapter<ArticlesListAdapter.ArticleViewHolder>() {
 
-    val diffCallBack = object : DiffUtil.ItemCallback<Article>() {
+    var clickLitener: ((Article) -> Unit)? = null
+
+    private val diffCallBack = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.url == newItem.url
         }
@@ -42,6 +44,11 @@ class ArticlesListAdapter : RecyclerView.Adapter<ArticlesListAdapter.ArticleView
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = items.currentList.get(position)
         holder.binding.article = article
+        clickLitener?.let { clickListener ->
+            holder.binding.root.setOnClickListener {
+                clickListener.invoke(article)
+            }
+        }
         holder.binding.executePendingBindings()
     }
 
