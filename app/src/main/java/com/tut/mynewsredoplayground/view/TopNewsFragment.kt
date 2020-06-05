@@ -16,13 +16,14 @@ import timber.log.Timber
 class TopNewsFragment : Fragment() {
 
     private val TAG = TopNewsFragment::class.java.simpleName
+    private lateinit var binding: TopNewsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = TopNewsBinding.inflate(inflater, container, false)
+        binding = TopNewsBinding.inflate(inflater, container, false)
         val viewModel by activityViewModels<NewsViewModel>()
         val adapter = ArticlesListAdapter()
         adapter.clickLitener = {
@@ -34,15 +35,15 @@ class TopNewsFragment : Fragment() {
         viewModel.fetchStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    binding.paginationProgressBar.visibility = View.GONE
+                    hideLoader()
                     adapter.submitItems(it.data)
                 }
                 is Resource.Loading -> {
-                    binding.paginationProgressBar.visibility = View.VISIBLE
+                    showLoader()
                     //it.partialData
                 }
                 is Resource.Failure -> {
-                    binding.paginationProgressBar.visibility = View.GONE
+                    hideLoader()
                     Log.e(TAG, it.message)
                 }
             }
@@ -55,5 +56,14 @@ class TopNewsFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+
+    private fun showLoader() {
+        binding.paginationProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoader() {
+        binding.paginationProgressBar.visibility = View.GONE
     }
 }
