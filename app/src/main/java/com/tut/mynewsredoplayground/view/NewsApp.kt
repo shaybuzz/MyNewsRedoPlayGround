@@ -1,4 +1,4 @@
-package com.tut.mynewsredoplayground
+package com.tut.mynewsredoplayground.view
 
 import android.app.Application
 import timber.log.Timber
