@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.tut.mynewsredoplayground.databinding.TopNewsBinding
 import com.tut.mynewsredoplayground.utils.Resource
 import com.tut.mynewsredoplayground.view.adapters.ArticlesListAdapter
@@ -17,7 +18,7 @@ class TopNewsFragment : Fragment() {
 
     private val TAG = TopNewsFragment::class.java.simpleName
     private lateinit var binding: TopNewsBinding
-    private lateinit var adapter:ArticlesListAdapter
+    private lateinit var adapter: ArticlesListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +60,8 @@ class TopNewsFragment : Fragment() {
         adapter = ArticlesListAdapter()
         adapter.clickLitener = {
             Timber.d("#### on click article ${it.title}")
+            val direction = TopNewsFragmentDirections.actionTopNewsFragmentToArticleViewFragment(it)
+            findNavController().navigate(direction)
         }
 
         binding.topNews.adapter = adapter

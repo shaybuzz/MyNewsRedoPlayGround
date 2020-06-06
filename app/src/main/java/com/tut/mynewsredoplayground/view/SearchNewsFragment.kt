@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.tut.mynewsredoplayground.databinding.FragmentSearchNewsBinding
 import com.tut.mynewsredoplayground.utils.Resource
 import com.tut.mynewsredoplayground.view.adapters.ArticlesListAdapter
+import timber.log.Timber
 
 class SearchNewsFragment : Fragment() {
 
@@ -57,6 +59,12 @@ class SearchNewsFragment : Fragment() {
 
     private fun initRecyclerView() {
         adapter = ArticlesListAdapter()
+        adapter.clickLitener = {
+            Timber.d("#### on click article ${it.title}")
+            val direction =
+                SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleViewFragment(it)
+            findNavController().navigate(direction)
+        }
         binding.rvSearchNews.adapter = adapter
     }
 

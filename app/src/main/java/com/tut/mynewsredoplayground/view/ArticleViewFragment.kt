@@ -1,22 +1,23 @@
 package com.tut.mynewsredoplayground.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.tut.mynewsredoplayground.databinding.FragmentArticleBinding
+import androidx.navigation.fragment.navArgs
+import com.tut.mynewsredoplayground.R
+import kotlinx.android.synthetic.main.fragment_article.*
 
-class ArticleViewFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentArticleBinding.inflate(inflater, container, false)
-        val viewModel by activityViewModels<NewsViewModel>()
+class ArticleViewFragment : Fragment(R.layout.fragment_article) {
 
-        return binding.root
+    val arg: ArticleViewFragmentArgs by navArgs()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val article = arg.article
+        webView.apply {
+            val webClient = WebViewClient()
+            loadUrl(article.url)
+        }
     }
 }
