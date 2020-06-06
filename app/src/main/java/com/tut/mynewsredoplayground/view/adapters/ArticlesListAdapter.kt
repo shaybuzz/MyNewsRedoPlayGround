@@ -28,6 +28,10 @@ class ArticlesListAdapter : RecyclerView.Adapter<ArticlesListAdapter.ArticleView
         differItems.submitList(data)
     }
 
+    fun getItem(position: Int):Article? {
+        return differItems.currentList.get(position)
+    }
+
     inner class ArticleViewHolder(val binding: ItemArticlePreviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
