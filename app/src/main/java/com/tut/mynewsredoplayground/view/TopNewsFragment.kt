@@ -51,11 +51,6 @@ class TopNewsFragment : Fragment() {
             }
         })
 
-//        viewModel.savedArticles.observe(viewLifecycleOwner, Observer {
-//            adapter.submitItems(it)
-//        })
-
-
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -68,13 +63,19 @@ class TopNewsFragment : Fragment() {
             findNavController().navigate(direction)
         }
 
-        binding.topNews.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+        binding.topNews.adapter = adapter
+    }
+
+    //moved to data binding added listener to list
+    private fun checkScroll(){
+        binding.topNews.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                if(isScrollToEnd(recyclerView.layoutManager as LinearLayoutManager)){
+                if (isScrollToEnd(recyclerView.layoutManager as LinearLayoutManager)) {
                     Timber.d("### scroll down...")
-                }else{
+                } else {
                     Timber.d("### scroll ...")
                 }
 
@@ -82,15 +83,14 @@ class TopNewsFragment : Fragment() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     Timber.d("Scrolling")
-                }else{
+                } else {
                     Timber.d("not Scrolling")
                 }
             }
         })
 
-        binding.topNews.adapter = adapter
     }
 
     private fun isScrollToEnd(linearLayoutManager: LinearLayoutManager): Boolean {

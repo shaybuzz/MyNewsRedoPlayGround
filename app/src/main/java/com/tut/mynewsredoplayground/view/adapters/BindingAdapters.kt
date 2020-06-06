@@ -31,7 +31,7 @@ object BindingAdapters {
 
 
     @JvmStatic
-    @BindingAdapter(value = ["imageFromUrl", "placeHolderer"], requireAll = true)
+    @BindingAdapter(value = ["imageFromUrl", "placeHolderer"], requireAll = false)
     fun bindurl(image: ImageView, imageUrl: String?, thePlaceholder: Drawable?) {
         if (imageUrl != null && imageUrl.isNotEmpty() && thePlaceholder != null)
             Glide.with(image.context).load(imageUrl).placeholder(thePlaceholder).transition(
@@ -40,34 +40,14 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("app:isScrollingg")
-    fun islistScrolling(
-        recyclerView: RecyclerView,
-        isScrolling: MutableLiveData<Boolean>?
-    ) {
-        isScrolling?.postValue(true)
-//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//            }
-//
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                isScrolling?.postValue(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-//            }
-//        })
-    }
-
-
-    @JvmStatic
     @BindingAdapter(
         value = ["app:isScrolledTowardEndOfList", "app:isScrolling"],
         requireAll = false
     )
-    fun isTodfdfwardsEndOfList(
+    fun isScrollingTowardEnd(
         recyclerView: RecyclerView,
-        isTowardEndOfList: MutableLiveData<Boolean>?,
-        isScrolling: MutableLiveData<Boolean>?
+        isTowardEndOfList: MutableLiveData<Boolean>,
+        isScrolling: MutableLiveData<Boolean>
     ) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -77,12 +57,16 @@ object BindingAdapters {
                 val visibleItemsCount = linearLayoutManager.childCount
                 val totalListItemsCount = linearLayoutManager.itemCount
                 val preLastPageItemPosition = totalListItemsCount - visibleItemsCount
-                isTowardEndOfList?.postValue(lastVisible >= preLastPageItemPosition)
+                val towardEnd = lastVisible >= preLastPageItemPosition
+                if (isTowardEndOfList.value != towardEnd) {
+                    isTowardEndOfList.postValue(towardEnd)
+                }
+
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                isScrolling?.postValue(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                isScrolling.postValue(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
             }
         })
     }

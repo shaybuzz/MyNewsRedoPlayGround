@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.tut.mynewsredoplayground.model.Article
 import com.tut.mynewsredoplayground.repositories.ArticleRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class NewsViewModel(private val articleRepository: ArticleRepository) : ViewModel() {
 
@@ -15,9 +16,23 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
 
     var searchTerm = MutableLiveData<String>()
 
-    //not working need to observe forever?
-    val isScrolling: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val isScrollingTowardsEndOfList = MutableLiveData<Boolean>()
+    //TODO better then observe forever??
+    val isScrolling: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
+        observeForever(Observer {
+            if (it) Timber.d("#### scrolling.. ")
+            else Timber.d("### idle")
+        })
+    }
+    val isScrollingTowardsEndOfList = MutableLiveData<Boolean>().apply {
+        observeForever(Observer {
+            if (it) {
+                Timber.d("#### toward end of list load more ")
+                //fetchArticles("us")
+            } else {
+                Timber.d("#### not toward end")
+            }
+        })
+    }
 
     private var fetchPage: Int = 1
     private var searchPage: Int = 1
