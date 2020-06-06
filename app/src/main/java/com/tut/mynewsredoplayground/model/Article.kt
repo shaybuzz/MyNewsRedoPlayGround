@@ -9,14 +9,14 @@ import java.io.Serializable
 data class Article(
     val author: String?,
     val content: String?,
-    val description: String?="",
+    val description: String? = "",
     val publishedAt: String,
     @Embedded(prefix = "_source")
     val source: Source,
     val title: String,
     val url: String,
     val urlToImage: String?
-):Serializable{
+) : Serializable {
     @PrimaryKey(autoGenerate = true)
-    var id:Long? = null
+    var id: Long? = null
 }

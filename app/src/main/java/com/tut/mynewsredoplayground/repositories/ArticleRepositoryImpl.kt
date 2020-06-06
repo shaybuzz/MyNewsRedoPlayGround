@@ -18,6 +18,14 @@ class ArticleRepositoryImpl(private val newsApi: NewsApi, private val newsDao: N
     private val _searchFetchResponse = MutableLiveData<Resource<List<Article>>>()
     override val searchFetchResponse: LiveData<Resource<List<Article>>> = _searchFetchResponse
 
+    override suspend fun saveArticle(article: Article) {
+        newsDao.upsert(article)
+    }
+
+    override suspend fun unSaveArticle(article: Article) {
+        newsDao.delete(article)
+    }
+
     override suspend fun fetch(country: String, page: Int) {
         try {
             _fetchResponse.postValue(Resource.Loading())
