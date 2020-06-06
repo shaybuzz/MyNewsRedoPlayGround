@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tut.mynewsredoplayground.databinding.TopNewsBinding
 import com.tut.mynewsredoplayground.utils.Resource
 import com.tut.mynewsredoplayground.view.adapters.ArticlesListAdapter
@@ -27,6 +30,7 @@ class TopNewsFragment : Fragment() {
     ): View? {
         binding = TopNewsBinding.inflate(inflater, container, false)
         val viewModel by activityViewModels<NewsViewModel>()
+        binding.viewmodel = viewModel
 
         initRecyclerView()
 
@@ -64,7 +68,37 @@ class TopNewsFragment : Fragment() {
             findNavController().navigate(direction)
         }
 
+        binding.topNews.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if(isScrollToEnd(recyclerView.layoutManager as LinearLayoutManager)){
+                    Timber.d("### scroll down...")
+                }else{
+                    Timber.d("### scroll ...")
+                }
+
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                    Timber.d("Scrolling")
+                }else{
+                    Timber.d("not Scrolling")
+                }
+            }
+        })
+
         binding.topNews.adapter = adapter
+    }
+
+    private fun isScrollToEnd(linearLayoutManager: LinearLayoutManager): Boolean {
+        val lastVisible = linearLayoutManager.findLastVisibleItemPosition()
+        val visibleItemsCount = linearLayoutManager.childCount
+        val totalListItemsCount = linearLayoutManager.itemCount
+        val preLastPageItemPosition = totalListItemsCount - visibleItemsCount
+        return lastVisible >= preLastPageItemPosition
     }
 
 

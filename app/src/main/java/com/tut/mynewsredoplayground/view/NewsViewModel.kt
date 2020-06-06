@@ -15,11 +15,12 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
 
     var searchTerm = MutableLiveData<String>()
 
+    //not working need to observe forever?
+    val isScrolling: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isScrollingTowardsEndOfList = MutableLiveData<Boolean>()
 
     private var fetchPage: Int = 1
     private var searchPage: Int = 1
-
-
 
 
     init {
@@ -32,13 +33,13 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
         })
     }
 
-    fun saveArticle(article: Article){
+    fun saveArticle(article: Article) {
         viewModelScope.launch {
             articleRepository.saveArticle(article)
         }
     }
 
-    fun unSaveArticle(article: Article){
+    fun unSaveArticle(article: Article) {
         viewModelScope.launch {
             articleRepository.unSaveArticle(article)
         }
