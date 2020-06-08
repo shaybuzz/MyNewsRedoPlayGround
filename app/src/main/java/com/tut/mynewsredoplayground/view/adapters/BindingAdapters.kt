@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.tut.mynewsredoplayground.model.Article
+import com.tut.mynewsredoplayground.view.customView.NewsCustomView
+import kotlinx.android.synthetic.main.custom_news_layout.view.*
 
 
 object BindingAdapters {
@@ -27,6 +29,18 @@ object BindingAdapters {
     @BindingAdapter("setArticleTitle")
     fun TextView.setArticle(item: Article) {
         text = item.title
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("app:article")
+    fun loadArticle(customView: NewsCustomView, article: Article?) {
+        article?.let {
+            customView.tvDescription.text = it.description
+            customView.tvTitle.text = it.title
+            Glide.with(customView.ivArticleImage).load(article.urlToImage)
+                .into(customView.ivArticleImage)
+        }
     }
 
 
