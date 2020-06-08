@@ -1,5 +1,11 @@
 package com.tut.mynewsredoplayground.view
 
+import android.app.Application
+import android.app.Service
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.os.Build
 import android.os.CountDownTimer
 import androidx.lifecycle.*
 import com.tut.mynewsredoplayground.model.Article
@@ -7,7 +13,8 @@ import com.tut.mynewsredoplayground.repositories.ArticleRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class NewsViewModel(private val articleRepository: ArticleRepository) : ViewModel() {
+class NewsViewModel(private val articleRepository: ArticleRepository, application:Application) :
+    AndroidViewModel(application) {
 
     val savedArticles = articleRepository.savedArticles
 
@@ -17,12 +24,8 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
     var searchTerm = MutableLiveData<String>()
 
     //TODO better then observe forever??
-    val isScrolling: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
-        observeForever(Observer {
-            if (it) Timber.d("#### scrolling.. ")
-            else Timber.d("### idle")
-        })
-    }
+    val isScrolling: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
     val isScrollingTowardsEndOfList = MutableLiveData<Boolean>().apply {
         observeForever(Observer {
             if (it) {
@@ -66,6 +69,14 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
         }
     }
 
+    private fun hasInternetConnection():Boolean{
+        val app = getApplication<NewsApp>()
+        val cm = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting == true
+
+    }
+
     fun searchArticles(subject: String) {
         viewModelScope.launch {
             articleRepository.search(subject, searchPage++)
@@ -93,10 +104,10 @@ class NewsViewModel(private val articleRepository: ArticleRepository) : ViewMode
 }
 
 @Suppress("UNCHECKED_CAST")
-class NewsViewModelFactory(val articleRepository: ArticleRepository) : ViewModelProvider.Factory {
+class NewsViewModelFactory(val articleRepository: ArticleRepository, val application:Application) : ViewModelProvider.AndroidViewModelFactory(application)  {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(NewsViewModel::class.java)) {
-            return NewsViewModel(articleRepository) as T
+            return NewsViewModel(articleRepository, application) as T
         }
         throw IllegalArgumentException()
     }

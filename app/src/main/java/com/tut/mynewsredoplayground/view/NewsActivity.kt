@@ -29,7 +29,7 @@ class NewsActivity : AppCompatActivity() {
         val dao = NewsDatabase.getInstance(this).getNewsDao()
         val repo = ArticleRepositoryImpl(api, dao)
         newsViewModel =
-            ViewModelProvider(this, NewsViewModelFactory(repo)).get(NewsViewModel::class.java)
+            ViewModelProvider(this, NewsViewModelFactory(repo, application)).get(NewsViewModel::class.java)
 
 
         //test()
