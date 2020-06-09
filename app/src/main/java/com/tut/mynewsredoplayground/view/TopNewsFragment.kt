@@ -1,7 +1,6 @@
 package com.tut.mynewsredoplayground.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tut.mynewsredoplayground.databinding.TopNewsBinding
-import com.tut.mynewsredoplayground.utils.Resource
 import com.tut.mynewsredoplayground.view.adapters.ArticlesListAdapter
 import timber.log.Timber
 
@@ -34,22 +32,16 @@ class TopNewsFragment : Fragment() {
 
         initRecyclerView()
 
-        viewModel.fetchStatus.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Success -> {
-                    hideLoader()
-                    adapter.submitItems(it.data)
-                }
-                is Resource.Loading -> {
-                    showLoader()
-                    //it.partialData
-                }
-                is Resource.Failure -> {
-                    hideLoader()
-                    Log.e(TAG, it.message)
-                }
-            }
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
+            Timber.d("#### fragmebnt got articiles ")
+            adapter.submitItems(it)
         })
+
+//        viewModel.isScrollingTowardsEndOfList.observe(viewLifecycleOwner, Observer {
+//            if(it){
+//                viewModel.safeFetchArticles("us")
+//            }
+//        })
 
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -68,7 +60,7 @@ class TopNewsFragment : Fragment() {
     }
 
     //moved to data binding added listener to list
-    private fun checkScroll(){
+    private fun checkScroll() {
         binding.topNews.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

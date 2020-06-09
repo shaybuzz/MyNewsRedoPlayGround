@@ -34,22 +34,26 @@ class SearchNewsFragment : Fragment() {
 
         initRecyclerView()
 
-        viewModel.searchFetchStatus.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Success -> {
-                    hideLoader()
-                    adapter.submitItems(it.data)
-                }
-                is Resource.Loading -> {
-                    showLoader()
-                    //it.partialData
-                }
-                is Resource.Failure -> {
-                    hideLoader()
-                    Log.e(TAG, it.message)
-                }
-            }
+        viewModel.articlesSearch.observe(viewLifecycleOwner, Observer {
+            adapter.submitItems(it)
         })
+
+//        viewModel.searchFetchStatus.observe(viewLifecycleOwner, Observer {
+//            when (it) {
+//                is Resource.Success -> {
+//                    hideLoader()
+//                    adapter.submitItems(it.data)
+//                }
+//                is Resource.Loading -> {
+//                    showLoader()
+//                    //it.partialData
+//                }
+//                is Resource.Failure -> {
+//                    hideLoader()
+//                    Log.e(TAG, it.message)
+//                }
+//            }
+//        })
 
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
